@@ -1,0 +1,18 @@
+Package: PredictiveValueFPs
+Title: A reproducible package to perform studies for the predictive value of frequent patterns.
+Version: 0.0.0.9000
+Authors@R: 
+    person("Solon", "Ioannou", , "s.ioannou@ersmusmc.nl", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
+Imports:
+  dplyr, 
+  magrittr, 
+  PatientLevelPrediction, 
+  arules, 
+  arulesSequences,
+  AssociationRuleMining
