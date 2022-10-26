@@ -70,9 +70,9 @@ prepareFrequentPatternsObjects <- function(frequentPatternsObject,
       ParallelLogger::logTrace(paste("Preparing data for mining took", signif(delta, 3), attr(delta, "units")))
       
       # s1 <- arules::supportingTransactions(freaquentPatternsObject, transactions = transactions)
-      s0 <- arulesSequences::subset(frequentPatternsObject, size(frequentPatternsObject) <= patternLength)
+      s0 <- PredictiveValueFPs:::subset(frequentPatternsObject, size(frequentPatternsObject) <= patternLength)
       ParallelLogger::logInfo(paste("After removing FPs with length less than or equal to", patternLength, "there were", length(s0), "remaining."))
-      s0 <- arulesSequences::subset(s0, support >= minimumSupport)
+      s0 <- PredictiveValueFPs:::subset(s0, support >= minimumSupport)
       ParallelLogger::logInfo(paste("After removing FPs with minimum support greater than or equal to", minimumSupport, "there were", length(s0), "remaining."))
     
     if (savePatterns){
@@ -83,7 +83,7 @@ prepareFrequentPatternsObjects <- function(frequentPatternsObject,
     }
     
     if (removeLengthOnePatterns == TRUE){
-      s0 <- arulesSequences::subset(s0, size(s0) > 1)
+      s0 <- PredictiveValueFPs:::subset(s0, size(s0) > 1)
       remainingFPs <- as.numeric(dim(s0)[1])
       ParallelLogger::logInfo(paste("After removing length one FPs there were", remainingFPs, "remaining."))
     }
