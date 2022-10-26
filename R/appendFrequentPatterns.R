@@ -63,11 +63,12 @@ appendFrequentPatterns <- function(trainData, featureEngineeringSettings, covari
                                                                            transactionsRowId = transactionsRowId,
                                                                            fileToSave = file.path(dirLocation, paste0(fileName, "_MS_", nameMinimumSupport, "_PL_", maxlen, "_plpData")))
     covariateIDsInclude <- list(trainPatterns = frequentPatternsObject, 
-                                trainCovariateRef = cov$covariateData$covariateRef)
+                                trainCovariateRef = cov$covariateData$covariateRef, 
+                                temporalPlpData = temporalPlpData)
   } else {
     
     testDataRowId <- trainData$labels$rowId
-    
+    # temporalPlpData <- covariateIDsInclude$temporalPlpData
     covariateDataTest <- Andromeda::copyAndromeda(temporalPlpData$covariateData)
     
     covariateDataTest$covariates <- covariateDataTest$covariates %>%

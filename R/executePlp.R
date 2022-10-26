@@ -240,6 +240,7 @@ prepareFeatureEngineering <- function(
 executeRunPlp <- function(
     plpData,
     data,
+    # temporalPlpData,
     population,
     outcomeId = plpData$metaData$call$outcomeIds[1],
     analysisId = paste(Sys.Date(), plpData$metaData$call$outcomeIds[1], sep = '-'),
@@ -316,6 +317,9 @@ executeRunPlp <- function(
       },
       error = function(e) { ParallelLogger::logError(e); return(NULL)}
     )
+    
+    # Fix to read correct objectWithFPs
+    model$preprocessing$featureEngineering$settings$covariateIDsInclude$trainPatterns <- featureEngineeringSettings$frequentPatternsObject
     
     if(!is.null(model)){
       prediction <- model$prediction
