@@ -7,26 +7,21 @@ filterCovariateData <- function(plpData, minimumSupport, patternLength, createSe
   minSup = minimumSupport
   patLen = patternLength
   
- # # This fix should go to AssociationRuleMining where the vectors are created in the first place
- #  covariateData$covariateRef <- covariateData$covariateRef %>%
- #    mutate(patternLength = as.numeric(patternLength),
- #           support = as.numeric(support))
-  
   atemporalCovariates <- covariateData$covariateRef %>% 
-    filter(analysisId != 999) %>%
-    pull(covariateId)
+    dplyr::filter(analysisId != 999) %>%
+    dplyr::pull(covariateId)
   
   keepCovariates <- covariateData$covariateRef %>% 
-    filter(analysisId == 999 & patternLength > 1 & patternLength <= patLen & support >= minSup) %>%
-    pull(covariateId)
+    dplyr::filter(analysisId == 999 & patternLength > 1 & patternLength <= patLen & support >= minSup) %>%
+    dplyr::pull(covariateId)
   
   if (createSets == "freqPatsOnly"){
     
     covariateData$covariateRef <- covariateData$covariateRef %>%
-      filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% keepCovariates)
     
     covariateData$covariates <- covariateData$covariates %>%
-      filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% keepCovariates)
   }
   
   if (createSets == "mix"){    
@@ -34,10 +29,10 @@ filterCovariateData <- function(plpData, minimumSupport, patternLength, createSe
   covariates <- c(atemporalCovariates, keepCovariates)
   
   covariateData$covariateRef <- covariateData$covariateRef %>%
-    filter(covariateId %in% covariates)
+    dplyr::filter(covariateId %in% covariates)
   
   covariateData$covariates <- covariateData$covariates %>%
-    filter(covariateId %in% covariates)
+    dplyr::filter(covariateId %in% covariates)
   }
   
   result <-  plpData
@@ -62,20 +57,20 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
   patLen = patternLength
   
   atemporalCovariates <- covariateData$covariateRef %>% 
-    filter(analysisId != 999) %>%
-    pull(covariateId)
+    dplyr::filter(analysisId != 999) %>%
+    dplyr::pull(covariateId)
   
   keepCovariates <- covariateData$covariateRef %>% 
-    filter(analysisId == 999 & patternLength <= patLen & support >= minSup) %>%
-    pull(covariateId)
+    dplyr::filter(analysisId == 999 & patternLength <= patLen & support >= minSup) %>%
+    dplyr::pull(covariateId)
   
   if (createSets == "freqPatsOnly"){
     
     covariateData$covariateRef <- covariateData$covariateRef %>%
-      filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% keepCovariates)
     
     covariateData$covariates <- covariateData$covariates %>%
-      filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% keepCovariates)
   }
   
   if (createSets == "mix"){    
@@ -83,10 +78,10 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
     covariates <- c(atemporalCovariates, keepCovariates)
     
     covariateData$covariateRef <- covariateData$covariateRef %>%
-      filter(covariateId %in% covariates)
+      dplyr::filter(covariateId %in% covariates)
     
     covariateData$covariates <- covariateData$covariates %>%
-      filter(covariateId %in% covariates)
+      dplyr::filter(covariateId %in% covariates)
   }
   
   result <-  plpData
@@ -103,34 +98,22 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
   testMetaData <- attr(plpData$Test$covariateData, "metaData")
   testCovariateData <- Andromeda::copyAndromeda(plpData$Test$covariateData)
   
-  # testCovariateData$covariateRef <- testCovariateData$covariateRef %>%
-  #   mutate(patternLength = as.numeric(patternLength),
-  #          support = as.numeric(support))
-  
-  # atemporalCovariates <- testCovariateData$covariateRef %>% 
-  #   filter(analysisId != 999) %>%
-  #   pull(covariateId)
-  # 
-  # keepCovariates <- testCovariateData$covariateRef %>% 
-  #   filter(analysisId == 999 & patternLength <= patLen & support >= minSup) %>%
-  #   pull(covariateId)
-  
   if (createSets == "freqPatsOnly"){
     
     testCovariateData$covariateRef <- testCovariateData$covariateRef %>%
-      filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% keepCovariates)
     
     testCovariateData$covariates <- testCovariateData$covariates %>%
-      filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% keepCovariates)
   }
   
   if (createSets == "mix"){    
     
     testCovariateData$covariateRef <- testCovariateData$covariateRef %>%
-      filter(covariateId %in% covariates)
+      dplyr::filter(covariateId %in% covariates)
     
     testCovariateData$covariates <- testCovariateData$covariates %>%
-      filter(covariateId %in% covariates)
+      dplyr::filter(covariateId %in% covariates)
   }
   
   class(testCovariateData) = 'CovariateData'
