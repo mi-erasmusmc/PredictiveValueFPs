@@ -50,11 +50,11 @@ filterCovariateData <- function(plpData, minimumSupport, patternLength, createSe
 filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c("freqPatsOnly", "mix")){
   
   # Train set
-  ParallelLogger::logInfo("Preparing train set...")
   metaData <- attr(plpData$Train$covariateData, "metaData")
   covariateData <- Andromeda::copyAndromeda(plpData$Train$covariateData)
   minSup = minimumSupport
   patLen = patternLength
+  ParallelLogger::logInfo(paste("Preparing train set with minimum support", minimumSupport, "and pattern length", patLen))
   
   atemporalCovariates <- covariateData$covariateRef %>% 
     dplyr::filter(analysisId != 999) %>%
@@ -71,6 +71,8 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
     
     covariateData$covariates <- covariateData$covariates %>%
       dplyr::filter(covariateId %in% keepCovariates)
+    
+    ParallelLogger::logInfo(paste0("Number of covariates in train set ", length(keepCovariates), "."))
   }
   
   if (createSets == "mix"){    
@@ -82,7 +84,12 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
     
     covariateData$covariates <- covariateData$covariates %>%
       dplyr::filter(covariateId %in% covariates)
+    
+    ParallelLogger::logInfo(paste0("Number of covariates in train set ", length(covariates), " with ", length(keepCovariates), " FPs."))
   }
+  
+  
+ 
   
   result <-  plpData
   class(covariateData) = 'CovariateData'
@@ -115,6 +122,8 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
     testCovariateData$covariates <- testCovariateData$covariates %>%
       dplyr::filter(covariateId %in% covariates)
   }
+  
+  ParallelLogger::logInfo(paste0("Number of covariates in test set ", testCovariateData$covariateRef %>% dplyr::count() %>% dplyr::pull(), " with ", testCovariateData$covariateRef %>% dplyr::filter(analysisId == '999') %>% dplyr::count() %>% dplyr::pull(), " FPs."))
   
   class(testCovariateData) = 'CovariateData'
   attr(class(testCovariateData), "package") <- "FeatureExtraction"
