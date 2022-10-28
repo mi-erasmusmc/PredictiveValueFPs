@@ -1,0 +1,10 @@
+name: PredictiveValueFPs
+channels:
+  - conda-forge
+  - base
+  - bioconda
+  - R
+dependencies:
+  - r-base=4.1.3
+  - r-tidyverse=1.3.2
+  - snakemake=7.16.0
