@@ -41,6 +41,7 @@ execute <- function(runExtractAtemporalData = FALSE,
   atemporalCovariateSettings = covariateSettings$atemporalCovariateSettings
   temporalCovariateSettings = covariateSettings$temporalCovariateSettings
   restrictPlpDataSettings = covariateSettings$restrictPlpDataSettings
+  covariateDirectory = covariateSettings$saveDirectory
   
   if (!dir.exists(saveDirectory)){
     dir.create(saveDirectory, recursive = TRUE)
@@ -53,7 +54,7 @@ execute <- function(runExtractAtemporalData = FALSE,
   bakedData_directory <- file.path(saveDirectory, analysisId, "data", "processedData")
   FPs_directory <- file.path(saveDirectory, analysisId, "data", "inputs", "minedFPs")
   itemSet_directory <- file.path(saveDirectory, analysisId, "data", "inputs", "itemsets")
-  plpInput_directory <- file.path(saveDirectory, analysisId, "data", "inputs", "predictorSets", fileName)
+  # plpInput_directory <- file.path(saveDirectory, analysisId, "data", "inputs", "predictorSets", fileName)
   plpData_directory <- file.path(saveDirectory, analysisId, "data", "inputs", "plpData")
   plpOutput_directory <- file.path(saveDirectory, analysisId, "results")
   
@@ -62,7 +63,7 @@ execute <- function(runExtractAtemporalData = FALSE,
     PredictiveValueFPs::extractAtemporalData(databaseDetails = databaseDetails, 
                                              covariateSettings = atemporalCovariateSettings, 
                                              restrictPlpDataSettings = restrictPlpDataSettings, 
-                                             outputFolder = file.path(saveDirectory, analysisId), 
+                                             outputFolder = file.path(covariateDirectory, analysisId), 
                                              fileName = fileName)
   }
   
@@ -70,7 +71,7 @@ execute <- function(runExtractAtemporalData = FALSE,
     PredictiveValueFPs::extractTemporalData(databaseDetails = databaseDetails, 
                                             covariateSettings = temporalCovariateSettings, 
                                             restrictPlpDataSettings = restrictPlpDataSettings, 
-                                            outputFolder = file.path(saveDirectory, analysisId), 
+                                            outputFolder = file.path(covariateDirectory, analysisId), 
                                             fileName = fileName) 
   }
   
@@ -78,13 +79,15 @@ execute <- function(runExtractAtemporalData = FALSE,
   if (runPrepareData){
     PredictiveValueFPs::prepareData(runPlpSettings = runPlpSettings,
                                     analysisSettings = analysisSettings, 
-                                    outputFolder = saveDirectory)
+                                    outputFolder = saveDirectory, 
+                                    inputFolder = covariateDirectory)
   }
   
   #step2: Mine frequent patterns using the minimum minSup value and the maximum pattern length
   if (runExtractFPs)  {
     PredictiveValueFPs::extractFPs(runFrequentPatternsSettings = runFrequentPatternsSettings,
                                    outputFolder = file.path(saveDirectory, analysisId), 
+                                   inputFolder = file.path(covariateDirectory, analysisId),
                                    fileName = fileName)
   }
   
@@ -102,7 +105,8 @@ execute <- function(runExtractAtemporalData = FALSE,
     PredictiveValueFPs::predictFPs(runPlpSettings = runPlpSettings, 
                                    analysisSettings = analysisSettings, 
                                    covariateSet = covariateSet,
-                                   outputFolder = saveDirectory)
+                                   outputFolder = saveDirectory, 
+                                   inputFolder = file.path(covariateDirectory, analysisId))
   }
    
   

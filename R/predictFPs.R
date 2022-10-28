@@ -2,6 +2,7 @@
 predictFPs <- function(runPlpSettings, 
                        analysisSettings,
                        covariateSet = c("freqPatsOnly", "mix"),
+                       inputFolder,
                        outputFolder){
   
   # Settings required for running plp
@@ -22,9 +23,9 @@ predictFPs <- function(runPlpSettings,
   
   plpData_directory <- file.path(outputFolder, analysisId, "data", "inputs", "plpData")
   plpOutput_directory <- file.path(outputFolder, analysisId, "results")
-  plpInput_directory <- file.path(outputFolder, analysisId, "data", "inputs", "predictorSets", fileName)
+  inputDirectory <- file.path(inputFolder, "data", "inputs", "predictorSets", fileName)
   
-  atemporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(plpInput_directory, paste0(fileName, "_atemporal")))
+  atemporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_atemporal")))
   
   if (covariateSet == "freqPatsOnly"){
     

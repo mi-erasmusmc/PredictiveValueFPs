@@ -1,6 +1,7 @@
 #' @export
 prepareData <- function(runPlpSettings,
                         analysisSettings, 
+                        inputFolder,
                         outputFolder){
   
   # Settings required for running plp
@@ -20,9 +21,11 @@ prepareData <- function(runPlpSettings,
   fileName = stringr::str_remove(analysisName, "predicting_")
   
   bakedData_directory <- file.path(outputFolder, analysisId, "data", "processedData")
-  plpInput_directory <- file.path(outputFolder, analysisId, "data", "inputs", "predictorSets", fileName)
-  atemporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(plpInput_directory, paste0(fileName, "_atemporal")))
-  temporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(plpInput_directory, paste0(fileName, "_temporal")))
+  # plpInput_directory <- file.path(outputFolder, analysisId, "data", "inputs", "predictorSets", fileName)
+  inputDirectory <- file.path(inputFolder, analysisId, "data", "inputs", "predictorSets", fileName)
+  
+  atemporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_atemporal")))
+  temporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_temporal")))
   
   output1 <- prepareRunPlp(plpData = atemporalPlpData,
                            outcomeId = outcomeId,

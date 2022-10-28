@@ -7,10 +7,10 @@ extractAtemporalData <- function(
     fileName
   ){
   
-  plpInput_directory <- file.path(outputFolder, "data", "inputs", "predictorSets", fileName)
+  inputDirectory <- file.path(outputFolder, "data", "inputs", "predictorSets", fileName)
 
-  if (!dir.exists(plpInput_directory)){
-    dir.create(plpInput_directory, recursive = TRUE)
+  if (!dir.exists(inputDirectory)){
+    dir.create(inputDirectory, recursive = TRUE)
   } 
   
   atemporalPlpData <- PatientLevelPrediction::getPlpData(databaseDetails = databaseDetails, 
@@ -18,10 +18,10 @@ extractAtemporalData <- function(
                                                          restrictPlpDataSettings = restrictPlpDataSettings
   )
   
-  PatientLevelPrediction::savePlpData(atemporalPlpData, file.path(plpInput_directory, paste0(fileName, "_atemporal")))
+  PatientLevelPrediction::savePlpData(atemporalPlpData, file.path(inputDirectory, paste0(fileName, "_atemporal")))
   
   ParallelLogger::logInfo("Finished extracting atemporal covariate data.")
-  ParallelLogger::logInfo(paste0("Atemporal covariate data location:", plpInput_directory))
+  ParallelLogger::logInfo(paste0("Atemporal covariate data location:", inputDirectory))
 }
 
 #' @export
@@ -33,10 +33,10 @@ extractTemporalData <- function(
     fileName
     ){
   
-  plpInput_directory <- file.path(outputFolder, "data", "inputs", "predictorSets", fileName)
+  inputDirectory <- file.path(outputFolder, "data", "inputs", "predictorSets", fileName)
 
-  if (!dir.exists(plpInput_directory)){
-    dir.create(plpInput_directory, recursive = TRUE)
+  if (!dir.exists(inputDirectory)){
+    dir.create(inputDirectory, recursive = TRUE)
   } 
   
   temporalPlpData <- PatientLevelPrediction::getPlpData(databaseDetails = databaseDetails, 
@@ -44,9 +44,9 @@ extractTemporalData <- function(
                                                          restrictPlpDataSettings = restrictPlpDataSettings
   )
   
-  PatientLevelPrediction::savePlpData(temporalPlpData, file.path(plpInput_directory, paste0(fileName, "_temporal")))
+  PatientLevelPrediction::savePlpData(temporalPlpData, file.path(inputDirectory, paste0(fileName, "_temporal")))
   
   ParallelLogger::logInfo("Finished extracting temporal covariate data.")
-  ParallelLogger::logInfo(paste0("Temporal covariate data location:", plpInput_directory))
+  ParallelLogger::logInfo(paste0("Temporal covariate data location:", inputDirectory))
   
 }

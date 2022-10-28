@@ -1,5 +1,6 @@
 #' @export
 extractFPs <- function(runFrequentPatternsSettings, 
+                       inputFolder,
                        outputFolder,
                        fileName
                        ){
@@ -13,10 +14,10 @@ extractFPs <- function(runFrequentPatternsSettings,
   
   FPs_directory <- file.path(outputFolder, "data", "inputs", "minedFPs")
   plpData_directory <- file.path(outputFolder, "data", "inputs", "plpData")
-  plpInput_directory <- file.path(outputFolder, "data", "inputs", "predictorSets", fileName)
+  inputDirectory <- file.path(inputFolder, "data", "inputs", "predictorSets", fileName)
   
   output1 <- loadBakedData(file.path(outputFolder, "data", "processedData"))
-  temporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(plpInput_directory, paste0(fileName, "_temporal")))
+  temporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_temporal")))
   
   settings <- mineFrequentPatternsSettings(minimumSupport = minMinimumSupport, 
                                            maximumPatternLength = maxPatternLength, 
