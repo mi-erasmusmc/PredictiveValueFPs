@@ -202,6 +202,10 @@ mineTotalFrequentPatterns <- function(trainData,
                                                    maxlen = patternLength, 
                                                    maxsize = itemSize), 
                                   control = list(verbose = TRUE, tidLists = TRUE))
+    # The following is to correct for the arulesSequences misreading of rowIds 
+    tidLists <- supportingTransactions(s0, transactions = transactions)
+    s0@tidLists <- tidLists
+    ###
     nameMinSup <- gsub(pattern = "\\.", replacement = "_", x = minimumSupport)
     namePatternLength <- as.numeric(patternLength)
     # nameLookBackPeriod <- max(inputData$timeId)
