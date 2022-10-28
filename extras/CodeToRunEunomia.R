@@ -5,11 +5,10 @@ library(arules)
 library(arulesSequences)
 library(PatientLevelPrediction)
 
+
+# Database details ---------
 connectionDetails <- getEunomiaConnectionDetails()
 createCohorts(connectionDetails = connectionDetails)
-## Define minSup and pattern length values
-minSup <- c(0.2, 0.1, 0.05)
-patLength <- c(2, 3, 4, 5)
 
 databaseDetails <- PatientLevelPrediction::createDatabaseDetails(connectionDetails = connectionDetails, 
                                                                  cdmDatabaseSchema = 'main', 
@@ -22,7 +21,13 @@ databaseDetails <- PatientLevelPrediction::createDatabaseDetails(connectionDetai
                                                                  outcomeIds = 3
 )
 
-# sample 100,000 so it is fast
+
+# Define minSup and pattern length values -------
+minSup <- c(0.2, 0.1, 0.05)
+patLength <- c(2, 3, 4, 5)
+
+
+# Plp data settings -------
 restrictPlpDataSettings <- PatientLevelPrediction::createRestrictPlpDataSettings(
   sampleSize = NULL
 )
@@ -42,7 +47,7 @@ temporalCovariateSettings <- FeatureExtraction::createTemporalSequenceCovariateS
                                                                                         sequenceStartDay = -99999, 
                                                                                         sequenceEndDay = 0)
 
-
+# RunPlpSettings -------
 # normalize features and remove any redundant ones
 preprocessSettings <- PatientLevelPrediction::createPreprocessSettings(
   minFraction = 0.001, 
@@ -59,19 +64,6 @@ executeSettings <- PatientLevelPrediction::createExecuteSettings(
   runPreprocessData = T, 
   runModelDevelopment = T, 
   runCovariateSummary = T
-)
-
-# use default LASSO logistic regression 
-modelSettings <- PatientLevelPrediction::setLassoLogisticRegression(seed = 1234)
-populationSettings <- PatientLevelPrediction::createStudyPopulationSettings(
-  binary = T, 
-  firstExposureOnly = T, 
-  washoutPeriod = 365, 
-  removeSubjectsWithPriorOutcome = T,
-  priorOutcomeLookback = 9999,
-  requireTimeAtRisk = F, 
-  riskWindowStart = 1, 
-  riskWindowEnd = 180
 )
 
 # split into 25% test and 75% training data, use 3-fold cross validation
@@ -91,6 +83,26 @@ sampleSettings <- PatientLevelPrediction::createSampleSettings(
   # type = 'underSample', 
   # sampleSeed = 123
 )
+
+
+# Population Settings ------
+populationSettings <- PatientLevelPrediction::createStudyPopulationSettings(
+  binary = T, 
+  firstExposureOnly = T, 
+  washoutPeriod = 365, 
+  removeSubjectsWithPriorOutcome = T,
+  priorOutcomeLookback = 9999,
+  requireTimeAtRisk = F, 
+  riskWindowStart = 1, 
+  riskWindowEnd = 180
+)
+
+
+# Model Settings -------
+# use default LASSO logistic regression 
+modelSettings <- PatientLevelPrediction::setLassoLogisticRegression(seed = 1234)
+
+# PredictiveValueFPs package settings ------
 
 runPlpSettings <- list(
   populationSettings = populationSettings, 
@@ -123,7 +135,7 @@ analysisSettings <- list(
   # atemporalPlpData = atemporalPlpData
 )
 
-
+# Execute study -----
 PredictiveValueFPs::execute(runExtractAtemporalData = FALSE, 
                             runExtractTemporalData = FALSE, 
                             runPrepareData = FALSE, 
