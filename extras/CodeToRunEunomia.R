@@ -36,7 +36,7 @@ atemporalCovariateSettings <- FeatureExtraction::createCovariateSettings(
   useDemographicsAge = T,
   useDemographicsGender = T,
   useConditionGroupEraLongTerm = T,
-  endDays = -1,
+  endDays = 0,
   longTermStartDays = -365*3
 )
 
@@ -124,7 +124,8 @@ covariateSettings <- list(
   databaseDetails = databaseDetails, 
   atemporalCovariateSettings = atemporalCovariateSettings,
   temporalCovariateSettings = temporalCovariateSettings,
-  restrictPlpDataSettings = restrictPlpDataSettings
+  restrictPlpDataSettings = restrictPlpDataSettings, 
+  saveDirectory = file.path(getwd(), "data", "Eunomia")
 )
 
 analysisSettings <- list(
@@ -146,5 +147,5 @@ PredictiveValueFPs::execute(runExtractAtemporalData = FALSE,
                             runFrequentPatternsSettings = runFrequentPatternsSettings,
                             covariateSettings = covariateSettings,
                             analysisSettings = analysisSettings, 
-                            saveDirectory = file.path(getwd(), "Eunomia4") )
+                            saveDirectory = file.path(getwd(), "Eunomia5") )
 
