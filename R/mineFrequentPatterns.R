@@ -285,6 +285,11 @@ mineTotalFrequentPatterns <- function(trainData,
   #   featureEngeering
   # )
   
+  attr(trainCov$covariateData, "patternLength") <- patternLength
+  attr(trainCov$covariateData, "minimumSupport") <- minimumSupport
+  attr(testCov$covariateData, "patternLength") <- patternLength
+  attr(testCov$covariateData, "minimumSupport") <- minimumSupport
+  
   result  = list(
   Train = trainCov,
   Test = testCov
