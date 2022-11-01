@@ -4,6 +4,7 @@ execute <- function(runExtractAtemporalData = FALSE,
                     runPrepareData = FALSE, 
                     runExtractFPs = FALSE, 
                     runGenerateFPObjects = FALSE, 
+                    runBaseline = FALSE,
                     runPrediction = FALSE, 
                     runPlpSettings,
                     runFrequentPatternsSettings, 
@@ -101,6 +102,13 @@ execute <- function(runExtractAtemporalData = FALSE,
   }
   
   #step4: Predict
+  if (runBaseline){
+    PredictiveValueFPs::predictBaseline(runPlpSettings = runPlpSettings, 
+                                        analysisSettings = analysisSettings, 
+                                        outputFolder = saveDirectory, 
+                                        inputFolder = file.path(covariateDirectory, analysisId))
+  }
+  
   if (runPrediction){
     PredictiveValueFPs::predictFPs(runPlpSettings = runPlpSettings, 
                                    analysisSettings = analysisSettings, 
@@ -108,7 +116,4 @@ execute <- function(runExtractAtemporalData = FALSE,
                                    outputFolder = saveDirectory, 
                                    inputFolder = file.path(covariateDirectory, analysisId))
   }
-   
-  
-  
 }

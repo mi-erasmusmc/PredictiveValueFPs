@@ -89,3 +89,52 @@ predictFPs <- function(runPlpSettings,
     }
   }
 }
+
+#' @export
+predictBaseline <- function(runPlpSettings, 
+                            analysisSettings,
+                            inputFolder,
+                            outputFolder){
+  
+  # Settings required for running plp
+  populationSettings = runPlpSettings$populationSettings
+  splitSettings = runPlpSettings$splitSettings
+  sampleSettings = runPlpSettings$sampleSettings
+  preprocessSettings = runPlpSettings$preprocessSettings
+  modelSettings = runPlpSettings$modelSettings
+  logSettings = runPlpSettings$logSettings
+  executeSettings = runPlpSettings$executeSettings
+  
+  # Settings for analysis
+  outcomeId = analysisSettings$outcomeId
+  analysisId = analysisSettings$analysisId
+  analysisName = analysisSettings$analysisName 
+  atemporalPlpData = analysisSettings$atemporalPlpData
+  fileName = stringr::str_remove(analysisName, "predicting_")
+  
+  bakedPlpData_directory <- file.path(outputFolder, analysisId, "data", "processedData")
+  plpOutput_directory <- file.path(outputFolder, analysisId, "results")
+  inputDirectory <- file.path(inputFolder, "data", "inputs", "predictorSets", fileName)
+  
+  ParallelLogger::logInfo("Running baseline model...")
+  
+  ParallelLogger::logInfo("Loading plpData objects...")
+  atemporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_atemporal")))
+  bakedPlpData <- loadBakedData(file = bakedPlpData_directory)
+      
+      baselineModel <- executeRunPlp(plpData = atemporalPlpData, 
+                                     data = bakedPlpData$plpData,
+                                     population = bakedPlpData$population, 
+                                     outcomeId = outcomeId,
+                                     analysisId = paste0("Baseline"),
+                                     analysisName = analysisName, 
+                                     populationSettings = populationSettings, 
+                                     splitSettings = splitSettings, 
+                                     sampleSettings = sampleSettings, 
+                                     # featureEngineeringSettings = settingsAppend, #note this here  
+                                     preprocessSettings = preprocessSettings, 
+                                     modelSettings = modelSettings, 
+                                     logSettings = logSettings, 
+                                     executeSettings = executeSettings, 
+                                     saveDirectory = plpOutput_directory)
+}
