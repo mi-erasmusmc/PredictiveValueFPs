@@ -359,6 +359,10 @@ executeRunPlp <- function(
     
   }
   
+  # Adding a fix to pass a message for the feature engineering
+  minSup = attributes(data$Test$covariateData)$minimumSupport
+  patLen = attributes(data$Test$covariateData)$patternLength
+  model$modelDesign$featureEngineeringSettings<- list(paste0("MS ", minSup, " and patternLength ", patLen))
   
   # covariateSummary
   covariateSummaryResult <- NULL
