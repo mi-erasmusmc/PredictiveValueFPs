@@ -57,7 +57,8 @@ Eunomia::createCohorts(connectionDetails = connectionDetails)
 # Database details ---------
 databaseDetails <- PatientLevelPrediction::createDatabaseDetails(connectionDetails = connectionDetails, 
                                                                  cdmDatabaseSchema = cdmDatabaseSchema, 
-                                                                 cdmDatabaseName = cdmDatabaseName, 
+                                                                 cdmDatabaseName = cdmDatabaseName,
+                                                                 cdmDatabaseId = cdmDatabaseName,
                                                                  cohortDatabaseSchema = cohortDatabaseSchema, 
                                                                  cohortTable = cohortTable, 
                                                                  outcomeDatabaseSchema = outcomeDatabaseSchema, 
@@ -173,11 +174,12 @@ analysisSettings <- list(
 )
 
 # Execute study -----
-PredictiveValueFPs::execute(runExtractAtemporalData = FALSE, 
-                            runExtractTemporalData = FALSE, 
+PredictiveValueFPs::execute(runExtractAtemporalData = TRUE, 
+                            runExtractTemporalData = TRUE, 
                             runPrepareData = TRUE,
                             runExtractFPs = TRUE, 
-                            runGenerateFPObjects = TRUE, 
+                            runGenerateFPObjects = TRUE,
+                            runBaseline = FALSE,
                             runPrediction = FALSE,
                             runPlpSettings = runPlpSettings, 
                             runFrequentPatternsSettings = runFrequentPatternsSettings,
