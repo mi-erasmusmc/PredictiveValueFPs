@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.1.2",
+    "Version": "4.2.2",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -11,17 +11,21 @@
   "Packages": {
     "Andromeda": {
       "Package": "Andromeda",
-      "Version": "0.6.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "ae741b16de25b2ab0a87b9f38e159282",
+      "Version": "1.0.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "Andromeda",
+      "RemoteUsername": "ohdsi",
+      "RemoteRef": "arrow_S4",
+      "RemoteSha": "a9fd927f37d66f5a72a2bb287b91cc4a72b3573f",
+      "Hash": "ee91e500fef2371a0f05a6faef5bba63",
       "Requirements": [
-        "DBI",
-        "RSQLite",
+        "arrow",
         "cli",
-        "dbplyr",
         "dplyr",
-        "hms",
+        "glue",
+        "jsonlite",
         "pillar",
         "rlang",
         "tidyselect",
@@ -31,14 +35,10 @@
     "AssociationRuleMining": {
       "Package": "AssociationRuleMining",
       "Version": "0.0.0.9000",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "AssociationRuleMining",
-      "RemoteUsername": "mi-erasmusmc",
-      "RemoteRef": "develop",
-      "RemoteSha": "f79f3c8beaae80541a904faa4d4017e8b2785033",
-      "Hash": "8f0d507d43c2b61be0ca7afc2a8d51c3",
+      "Source": "Local",
+      "RemoteType": "local",
+      "RemoteUrl": "~/github/AssociationRuleMining/",
+      "Hash": "d6218a4610d704970e4623a2843a3856",
       "Requirements": [
         "ParallelLogger",
         "SqlRender",
@@ -91,10 +91,15 @@
     },
     "DatabaseConnector": {
       "Package": "DatabaseConnector",
-      "Version": "5.0.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "53cac2a00e0f13e24ba7f198718ef409",
+      "Version": "5.1.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "DatabaseConnector",
+      "RemoteUsername": "ohdsi",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "6bdece864cfa9a5c9ea9b6d5473df4d2f8a30335",
+      "Hash": "a03e9ef14da764cd70ff24895be188b4",
       "Requirements": [
         "DBI",
         "SqlRender",
@@ -133,9 +138,9 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "FeatureExtraction",
       "RemoteUsername": "ohdsi",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "5363f5f4cdaf8b31ce9f193861169047b11ea41c",
-      "Hash": "2e6f81230989e15003feaf3dad0628ee",
+      "RemoteRef": "arrow_S4",
+      "RemoteSha": "bd0b6cfcba0e285ab0a7da4cbd6957d04e5acaae",
+      "Hash": "73610a2f582e19e5776d618b43f62ab4",
       "Requirements": [
         "Andromeda",
         "DBI",
@@ -194,14 +199,14 @@
       "Package": "PatientLevelPrediction",
       "Version": "6.0.4",
       "Source": "GitHub",
-      "Remotes": "ohdsi/BigKnn, ohdsi/Eunomia, ohdsi/FeatureExtraction,\n        ohdsi/IterativeHardThresholding, ohdsi/ParallelLogger,\n        ohdsi/OhdsiShinyModules",
+      "Remotes": "egillax/BigKnn@arrow, ohdsi/DatabaseConnector, ohdsi/Eunomia,\n        ohdsi/Andromeda@arrow_S4, ohdsi/Cyclops@arrow_S4,\n        ohdsi/FeatureExtraction@arrow_S4,\n        ohdsi/IterativeHardThresholding, ohdsi/ParallelLogger,\n        ohdsi/OhdsiShinyModules",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "PatientLevelPrediction",
-      "RemoteUsername": "OHDSI",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "4872541022024726e97912583e6dd9203b1a17e4",
-      "Hash": "af3426c8ea0c0f0c88245f7ab93621f4",
+      "RemoteUsername": "ohdsi",
+      "RemoteRef": "arrow_S4",
+      "RemoteSha": "509d1c446434574c9131c273815b56c77a96bb58",
+      "Hash": "01e2b4c8aeea1a24ff2afba10469b216",
       "Requirements": [
         "Andromeda",
         "Cyclops",
@@ -211,6 +216,7 @@
         "PRROC",
         "ParallelLogger",
         "SqlRender",
+        "data.table",
         "dplyr",
         "ggplot2",
         "gridExtra",
@@ -296,6 +302,24 @@
         "checkmate",
         "rJava",
         "rlang"
+      ]
+    },
+    "arrow": {
+      "Package": "arrow",
+      "Version": "10.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "05f9b803e1f6a5d47ff0a885ed04ebd2",
+      "Requirements": [
+        "R6",
+        "assertthat",
+        "bit64",
+        "cpp11",
+        "glue",
+        "purrr",
+        "rlang",
+        "tidyselect",
+        "vctrs"
       ]
     },
     "arules": {
@@ -451,31 +475,6 @@
       "Repository": "CRAN",
       "Hash": "36b67b5adf57b292923f5659f5f0c853",
       "Requirements": []
-    },
-    "dbplyr": {
-      "Package": "dbplyr",
-      "Version": "2.2.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "f6c7eb9617e4d2a86bb7182fff99c805",
-      "Requirements": [
-        "DBI",
-        "R6",
-        "assertthat",
-        "blob",
-        "cli",
-        "dplyr",
-        "glue",
-        "lifecycle",
-        "magrittr",
-        "pillar",
-        "purrr",
-        "rlang",
-        "tibble",
-        "tidyselect",
-        "vctrs",
-        "withr"
-      ]
     },
     "desc": {
       "Package": "desc",
