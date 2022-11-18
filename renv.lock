@@ -37,8 +37,8 @@
       "RemoteRepo": "AssociationRuleMining",
       "RemoteUsername": "mi-erasmusmc",
       "RemoteRef": "develop",
-      "RemoteSha": "f79f3c8beaae80541a904faa4d4017e8b2785033",
-      "Hash": "8f0d507d43c2b61be0ca7afc2a8d51c3",
+      "RemoteSha": "3474f3909c6a3f947e0d509d68c09715fc8f9b5b",
+      "Hash": "9231ce1c10dbc8efbc6465901164b5f4",
       "Requirements": [
         "ParallelLogger",
         "SqlRender",
@@ -91,10 +91,10 @@
     },
     "DatabaseConnector": {
       "Package": "DatabaseConnector",
-      "Version": "5.0.4",
+      "Version": "5.1.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "53cac2a00e0f13e24ba7f198718ef409",
+      "Hash": "7efe1532a5256de9dd7f2f8d90b4e6da",
       "Requirements": [
         "DBI",
         "SqlRender",
@@ -113,10 +113,10 @@
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "Eunomia",
-      "RemoteUsername": "ohdsi",
+      "RemoteUsername": "OHDSI",
       "RemoteRef": "HEAD",
       "RemoteSha": "e330860e581bcb33896ef1dbac29549224e0990c",
-      "Hash": "aa527f61c5f97344696099dfb7dc17fb",
+      "Hash": "4c1ba6af826638b212907f3ee0a7d0cb",
       "Requirements": [
         "DatabaseConnector",
         "RSQLite",
@@ -243,10 +243,10 @@
     },
     "RSQLite": {
       "Package": "RSQLite",
-      "Version": "2.2.16",
+      "Version": "2.2.18",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "b73d36bddd2ca5e2d8ea1ee85264573d",
+      "Hash": "a4a3bcd8a9380e04c86876d73a085b8f",
       "Requirements": [
         "DBI",
         "Rcpp",
@@ -288,10 +288,10 @@
     },
     "SqlRender": {
       "Package": "SqlRender",
-      "Version": "1.9.2",
+      "Version": "1.10.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "290e1e6423e66868a846d781740cc43b",
+      "Hash": "ce817a84681549f442cc4b240f2028aa",
       "Requirements": [
         "checkmate",
         "rJava",
@@ -430,18 +430,18 @@
     },
     "cpp11": {
       "Package": "cpp11",
-      "Version": "0.4.2",
+      "Version": "0.4.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "fa53ce256cd280f468c080a58ea5ba8c",
+      "Hash": "ed588261931ee3be2c700d22e94a29ab",
       "Requirements": []
     },
     "crayon": {
       "Package": "crayon",
-      "Version": "1.5.1",
+      "Version": "1.5.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "8dc45fd8a1ee067a92b85ef274e66d6a",
+      "Hash": "e8a1e41acf02548751f45c718d55aa6a",
       "Requirements": []
     },
     "data.table": {
@@ -936,10 +936,10 @@
     },
     "readr": {
       "Package": "readr",
-      "Version": "2.1.2",
+      "Version": "2.1.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "9c59de1357dc209868b5feb5c9f0fe2f",
+      "Hash": "2dfbfc673ccb3de3d8836b4b3bd23d14",
       "Requirements": [
         "R6",
         "cli",
@@ -1198,13 +1198,14 @@
     },
     "vctrs": {
       "Package": "vctrs",
-      "Version": "0.4.2",
+      "Version": "0.5.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0e3dfc070b2a8f0478fcdf86fb33355d",
+      "Hash": "001fd6a5ebfff8316baf9fb2b5516dc9",
       "Requirements": [
         "cli",
         "glue",
+        "lifecycle",
         "rlang"
       ]
     },
@@ -1218,10 +1219,10 @@
     },
     "vroom": {
       "Package": "vroom",
-      "Version": "1.5.7",
+      "Version": "1.6.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "976507b5a105bc3bdf6a5a5f29e0684f",
+      "Hash": "64f81fdead6e0d250fb041e175d123ab",
       "Requirements": [
         "bit64",
         "cli",
