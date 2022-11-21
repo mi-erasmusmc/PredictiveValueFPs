@@ -35,7 +35,7 @@ generateFPObjects <- function(minimumSupportValues,
       nameMinSup = gsub(x = combs[i, 1], pattern = "\\.",replacement =  "_")
       namePatternLength = combs[i, 2]
       saveBakedData(object = result, file = file.path(plpData_directory, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData_fpsOnly")))
-      covList[[i]] <- result
+      # covList[[i]] <- result
     }
   }
   if (covariateSet == "mix"){
@@ -54,7 +54,7 @@ generateFPObjects <- function(minimumSupportValues,
         nameMinSup = gsub(x = combs[i, 1], pattern = "\\.",replacement =  "_")
         namePatternLength = combs[i, 2]
         saveBakedData(object = result, file = file.path(plpData_directory, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData")))
-        covList[[i]] <- result
+        # covList[[i]] <- result
       }
   }
   ParallelLogger::logInfo(paste("Done."))
