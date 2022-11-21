@@ -123,7 +123,7 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
       dplyr::filter(covariateId %in% covariates)
   }
   
-  ParallelLogger::logInfo(paste0("Number of covariates in test set ", testCovariateData$covariateRef %>% dplyr::count() %>% dplyr::pull(), " with ", testCovariateData$covariateRef %>% dplyr::filter(analysisId == '999') %>% dplyr::count() %>% dplyr::pull(), " FPs."))
+  ParallelLogger::logInfo(paste0("Number of covariates in test set ", testCovariateData$covariateRef %>% dplyr::count() %>% dplyr::pull(), " with ", testCovariateData$covariateRef %>% dplyr::filter(analysisId == 999) %>% dplyr::count() %>% dplyr::pull(), " FPs."))
   
   class(testCovariateData) = 'CovariateData'
   attr(class(testCovariateData), "package") <- "FeatureExtraction"
