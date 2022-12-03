@@ -219,8 +219,8 @@
       "RemoteRepo": "PatientLevelPrediction",
       "RemoteUsername": "solisOHDSI",
       "RemoteRef": "arrow_S4",
-      "RemoteSha": "57c75890bfeb7fce7d55349a56d7be16dfa1516d",
-      "Hash": "9e63fee83de00c70d55f736375b7aaa1",
+      "RemoteSha": "872df23424f72eb19d93f0d8a6bbe1b86a0ce550",
+      "Hash": "0e6cf393765ac3aade782f1340b797d2",
       "Requirements": [
         "Andromeda",
         "Cyclops",
@@ -263,10 +263,10 @@
     },
     "RSQLite": {
       "Package": "RSQLite",
-      "Version": "2.2.18",
+      "Version": "2.2.19",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "a4a3bcd8a9380e04c86876d73a085b8f",
+      "Hash": "becd8219ad7056f1dbe2f3517c75c17d",
       "Requirements": [
         "DBI",
         "Rcpp",
@@ -308,10 +308,10 @@
     },
     "SqlRender": {
       "Package": "SqlRender",
-      "Version": "1.10.0",
+      "Version": "1.11.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "ce817a84681549f442cc4b240f2028aa",
+      "Hash": "9c67a0caeab9c6340bf51e3d1aea81ea",
       "Requirements": [
         "checkmate",
         "rJava",
@@ -901,18 +901,18 @@
     },
     "png": {
       "Package": "png",
-      "Version": "0.1-7",
+      "Version": "0.1-8",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "03b7076c234cb3331288919983326c55",
+      "Hash": "bd54ba8a0a5faded999a7aab6e46b374",
       "Requirements": []
     },
     "polspline": {
       "Package": "polspline",
-      "Version": "1.1.20",
+      "Version": "1.1.22",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "9df08911be2e031016e2a93e22d9aa60",
+      "Hash": "0246363e45df2deb6fa484cbc009dc4e",
       "Requirements": []
     },
     "praise": {
@@ -1117,14 +1117,18 @@
     },
     "stringr": {
       "Package": "stringr",
-      "Version": "1.4.1",
+      "Version": "1.5.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "a66ad12140cd34d4f9dfcc19e84fc2a5",
+      "Hash": "671a4d384ae9d32fc47a14e98bfa3dc8",
       "Requirements": [
+        "cli",
         "glue",
+        "lifecycle",
         "magrittr",
-        "stringi"
+        "rlang",
+        "stringi",
+        "vctrs"
       ]
     },
     "survival": {
