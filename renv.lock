@@ -217,10 +217,10 @@
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "PatientLevelPrediction",
-      "RemoteUsername": "solisOHDSI",
+      "RemoteUsername": "solisOhdsi",
       "RemoteRef": "arrow_S4",
-      "RemoteSha": "872df23424f72eb19d93f0d8a6bbe1b86a0ce550",
-      "Hash": "0e6cf393765ac3aade782f1340b797d2",
+      "RemoteSha": "f36d8d62381347fa16932bbec10dd226d5da2cf8",
+      "Hash": "6644a7e43210be7062287f011f93b1c9",
       "Requirements": [
         "Andromeda",
         "Cyclops",
