@@ -6,6 +6,7 @@ execute <- function(runExtractAtemporalData = FALSE,
                     runGenerateFPObjects = FALSE, 
                     runBaseline = FALSE,
                     runPrediction = FALSE, 
+                    runRecalibration = FALSE,
                     runPlpSettings,
                     runFrequentPatternsSettings, 
                     analysisSettings,
@@ -115,5 +116,12 @@ execute <- function(runExtractAtemporalData = FALSE,
                                    covariateSet = covariateSet,
                                    outputFolder = saveDirectory, 
                                    inputFolder = file.path(covariateDirectory, analysisId))
+  }
+  
+  if (runRecalibration){
+    PredictiveValueFPs::recalibrateProbabilitites(runPlpSettings = runPlpSettings, 
+                                                  analysisSettings = analysisSettings, 
+                                                  outputFolder = saveDirectory, 
+                                                  inputFolder = file.path(covariateDirectory, analysisId))
   }
 }
