@@ -135,7 +135,7 @@ predictBaseline <- function(runPlpSettings,
   atemporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_atemporal")))
   bakedPlpData <- loadBakedData(file = bakedPlpData_directory)
   
-  analysisExists <- file.exists(file.path(plpOutput_directory, paste0("Analysis_Baseline", modelName), "plpResult", "runPlp.rds"))
+  analysisExists <- file.exists(file.path(plpOutput_directory, paste0("Analysis_Baseline_", modelName), "plpResult", "runPlp.rds"))
   
   if (!analysisExists){    
       executeRunPlp(plpData = atemporalPlpData, 
