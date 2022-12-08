@@ -123,6 +123,7 @@ predictBaseline <- function(runPlpSettings,
   analysisName = analysisSettings$analysisName 
   atemporalPlpData = analysisSettings$atemporalPlpData
   fileName = stringr::str_remove(analysisName, "predicting_")
+  modelName <- attributes(modelSettings$param)$settings$modelType
   
   bakedPlpData_directory <- file.path(outputFolder, analysisId, "data", "processedData")
   plpOutput_directory <- file.path(outputFolder, analysisId, "results")
@@ -134,14 +135,14 @@ predictBaseline <- function(runPlpSettings,
   atemporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_atemporal")))
   bakedPlpData <- loadBakedData(file = bakedPlpData_directory)
   
-  analysisExists <- file.exists(file.path(plpOutput_directory, "Analysis_Baseline", "plpResult", "runPlp.rds"))
+  analysisExists <- file.exists(file.path(plpOutput_directory, paste0("Analysis_Baseline", modelName), "plpResult", "runPlp.rds"))
   
   if (!analysisExists){    
       executeRunPlp(plpData = atemporalPlpData, 
                               data = bakedPlpData$plpData,
                               population = bakedPlpData$population, 
                               outcomeId = outcomeId,
-                              analysisId = paste0("Analysis_Baseline"),
+                              analysisId = paste0("Analysis_Baseline_", modelName),
                               analysisName = analysisName, 
                               populationSettings = populationSettings, 
                               splitSettings = splitSettings, 
