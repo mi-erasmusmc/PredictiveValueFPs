@@ -17,7 +17,8 @@ Imports:
     arulesSequences,
     AssociationRuleMining,
     stringr,
-    ParallelLogger
+    ParallelLogger,
+    mRMRe
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
