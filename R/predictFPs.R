@@ -75,16 +75,22 @@ predictFPs <- function(runPlpSettings,
     for (i in seq_along(plpDataList)) {
     minSup = attributes(plpDataList[[i]]$plpData$Train$covariateData)$minimumSupport
     patLen = attributes(plpDataList[[i]]$plpData$Train$covariateData)$patternLength
+    featuresSelected <- attributes(plpDataList[[i]]$plpData$Train$covariateData)$featuresSelected
     MS = gsub(pattern = "\\.", replacement = "_", x = minSup)
     
-    analysisExists <- file.exists(file.path(plpOutput_directory, paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen), "plpResult", "runPlp.rds"))
+    if (is.null(featuresSelected)){
+      fullAnalysisName <- paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen)
+    } else {
+      fullAnalysisName <- paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen, "_", featuresSelected)
+    }
+    analysisExists <- file.exists(file.path(plpOutput_directory, fullAnalysisName, "plpResult", "runPlp.rds"))
     
     if (!analysisExists){
     executeRunPlp(plpData = atemporalPlpData, 
                             data = plpDataList[[i]]$plpData,
                             population = plpDataList[[1]]$population, 
                             outcomeId = outcomeId,
-                            analysisId = paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen),
+                            analysisId = paste0(fullAnalysisName),
                             analysisName = analysisName, 
                             populationSettings = populationSettings, 
                             splitSettings = splitSettings, 
@@ -96,7 +102,7 @@ predictFPs <- function(runPlpSettings,
                             executeSettings = executeSettings, 
                             saveDirectory = plpOutput_directory)
     } else {
-      ParallelLogger::logInfo(paste('Analysis', paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen), 'for outcome', analysisName, 'exists at', file.path(plpOutput_directory)))
+      ParallelLogger::logInfo(paste('Analysis', fullAnalysisName, 'for outcome', analysisName, 'exists at', file.path(plpOutput_directory)))
       }
     }
   }
