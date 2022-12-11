@@ -4,6 +4,7 @@ execute <- function(runExtractAtemporalData = FALSE,
                     runPrepareData = FALSE,
                     runExtractFPs = FALSE,
                     runGenerateFPObjects = FALSE,
+                    runFeatureSelection = FALSE, 
                     runBaseline = FALSE,
                     runPrediction = FALSE,
                     runRecalibration = FALSE,
@@ -35,6 +36,7 @@ execute <- function(runExtractAtemporalData = FALSE,
   atemporalPlpData <- analysisSettings$atemporalPlpData
   fileName <- stringr::str_remove(analysisName, "predicting_")
   covariateSet <- analysisSettings$covariateSet
+  numberOfFeatures <- analysisSettings$numberOfFeaturesForFeatureSelection
 
   # Settings for extracting covariateData
   databaseDetails <- covariateSettings$databaseDetails
@@ -109,8 +111,16 @@ execute <- function(runExtractAtemporalData = FALSE,
       fileName = fileName
     )
   }
+  
+  # step4: Feature Selection
+  if (runFeatureSelection){
+    PredictiveValueFPs::performFeatureSelection(inputDirectory = plpData_directory, 
+                                                outputDirectory = saveDirectory, 
+                                                analysisSettings = analysisSettings, 
+                                                numberOfFeatures = numberOfFeatures)
+  }
 
-  # step4: Predict
+  # step5: Predict
   if (runBaseline) {
     PredictiveValueFPs::predictBaseline(
       runPlpSettings = runPlpSettings,
