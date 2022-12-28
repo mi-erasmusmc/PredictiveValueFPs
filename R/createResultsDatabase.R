@@ -4,7 +4,7 @@ createResultsDatabase <- function(databaseDetails, resultsDirectory){
   PatientLevelPrediction::insertResultsToSqlite(
     resultLocation = resultsDirectory, 
     cohortDefinitions = NULL,
-    databaseList = createDatabaseList(
+    databaseList = PatientLevelPrediction::createDatabaseList(
       cdmDatabaseSchemas = databaseDetails$cohortDatabaseSchema,
       cdmDatabaseNames = databaseDetails$cdmDatabaseName,
       databaseRefIds = databaseDetails$cdmDatabaseId
