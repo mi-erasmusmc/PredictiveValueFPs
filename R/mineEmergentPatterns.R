@@ -1,44 +1,7 @@
 #' @export
-mineEmergentPatternsSettings <- function(minimumSupport, 
-                                         maximumPatternLength,
-                                         maximumItemSize, 
-                                         removeLengthOnePatterns = FALSE, 
-                                         frequentPatternsObject, 
-                                         transactionsObject = NULL, 
-                                         savePatterns = FALSE, 
-                                         absoluteDifference, 
-                                         keepDiscriminative = FALSE, 
-                                         classification = FALSE, 
-                                         outputFolder = getwd(), 
-                                         fileName){
-  
-  featureEngineeringSettings <- list(
-    support = support,
-    maxlen = maxlen,
-    maxsize = maxsize,
-    temporalPlpData = temporalPlpData,
-    removeLengthOnePatterns = removeLengthOnePatterns,
-    transactionsObject = transactionsObject,
-    absoluteDifference = absoluteDifference,
-    keepDiscriminative = keepDiscriminative,
-    savePatterns = savePatterns,
-    outputFolder = outputFolder, 
-    fileName = fileName
-  )
-  
-  # specify the function that will implement the sampling
-  attr(featureEngineeringSettings, "fun") <- "mineEmergentPatterns"
-  
-  # make sure the object returned is of class "sampleSettings"
-  class(featureEngineeringSettings) <- "mineEmergentPatternSettings"
-  return(featureEngineeringSettings)
-  
-}
-
-#' @export
-mineEmergentPatterns <- function(trainData, 
-                                 featureEngineeringSettings, 
-                                 covariateIdsInclude = NULL){
+mineTotalEmergentPatterns <- function(trainData, 
+                                      featureEngineeringSettings, 
+                                      covariateIdsInclude = NULL){
   # frequent pattern mining settings
   minimumSupport = featureEngineeringSettings$support
   patternLength = featureEngineeringSettings$maxlen
@@ -48,28 +11,29 @@ mineEmergentPatterns <- function(trainData,
   removeLengthOnePatterns = featureEngineeringSettings$removeLengthOnePatterns
   temporalPlpData = featureEngineeringSettings$temporalPlpData
   transactionsObject = featureEngineeringSettings$transactionsObject
+  savePatterns = featureEngineeringSettings$savePatterns
   absoluteDifference = featureEngineeringSettings$absoluteDifference
   keepDiscriminative = featureEngineeringSettings$keepDiscriminative
-  populationSettings = featureEngineeringSettings$populationSettings
-  savePatterns = featureEngineeringSettings$savePatterns
   
   dirLocation <- file.path(outputFolder)
   
   if (!dir.exists(dirLocation)){
-    dir.create(dirLocation)
+    dir.create(dirLocation, recursive = TRUE)
   }
   
-  trainDataRowId <- trainData$labels$rowId
+  ParallelLogger::logInfo("Starting mining train set.")
+  
+  trainDataRowId <- trainData$Train$labels$rowId
   
   ParallelLogger::logInfo(paste("Preparing study population of train set..."))
   # trainStudyPopulation <- trainData$labels$outcomeCount
   
   ParallelLogger::logInfo(paste("Getting negative train set row ids..."))
-  negativeRowId <- trainData$labels %>% 
+  negativeRowId <- trainData$Train$labels %>% 
     filter(outcomeCount == 0) %>%
     pull(rowId)
   ParallelLogger::logInfo(paste("Getting positive train set row ids..."))
-  positiveRowId <- trainData$labels %>% 
+  positiveRowId <- trainData$Train$labels %>% 
     filter(outcomeCount == 1) %>%
     pull(rowId)
   
@@ -118,12 +82,9 @@ mineEmergentPatterns <- function(trainData,
                                                  maxsize = itemSize), 
                                 control = list(verbose = TRUE, tidLists = TRUE, numpart = 1))
   if (savePatterns){
-    nameMinSup <- gsub(pattern = ".", replacement = "_", x = minimumSupport)
-    namePatternLength <- as.numeric(patternLength)
-    nameLookBackPeriod <- max(inputData$timeId)
+    saveRDS(s0, file.path(dirLocation, paste0(fileName, "_negative_FPs_train.Rds")))
+    saveRDS(s1, file.path(dirLocation, paste0(fileName, "_positive_FPs_train.Rds")))
     
-    saveRDS(s0, file.path(dirLocation, paste0(fileName, "_", nameMinSup, "_", namePatternLength, "_negative_FPs_train.Rds")))
-    saveRDS(s1, file.path(dirLocation, paste0(fileName, "_", nameMinSup, "_", namePatternLength, "_positive_FPs_train.Rds")))
   }
   
   initialFPsNegative <- as.numeric(dim(s0)[1])
@@ -131,8 +92,186 @@ mineEmergentPatterns <- function(trainData,
   
   ParallelLogger::logInfo(paste0("The set of FPs extracted for the negative outcome class were ", initialFPsNegative, ".", " The set of FPs extracted for the positive outcome class were ", initialFPsPositive, "."))
   
-  result = list(negativeClassFPs = s0, 
-                positiveClassFPs = s1)
+  if (removeLengthOnePatterns == TRUE){
+    s0 <- arulesSequences::subset(s0, size(x) > 1)
+    s1 <- arulesSequences::subset(s1, size(x) > 1)
+    remainingFPsNegative <- as.numeric(dim(s0)[1])
+    remainingFPsPositive <- as.numeric(dim(s1)[1])
+    ParallelLogger::logInfo(paste("After removing length one FPs from the negative class, there were", remainingFPsNegative, "remaining.", "After removing length one FPs from the positive class, there were", remainingFPsPositive, "remaining."))
+  }
+  
+  #if (nrow(s0) < 5000) {
+  #Need new function to combine results
+  commonPatterns <- AssociationRuleMining::filterCommonPatterns(s0, 
+                                                                s1, 
+                                                                transactionsNegative = transactionsNegative, 
+                                                                transactionsPositive = transactionsPositive,
+                                                                absoluteDifference = absoluteDifference, 
+                                                                keepDiscriminative = keepDiscriminative)
+  ParallelLogger::logInfo(paste("After removing redundant FPs from the negative class, there were", dim(commonPatterns[[1]])[1], "remaining.", 
+                                "After removing length one FPs from the positive class, there were", dim(commonPatterns[[2]])[1], "remaining."))
+  
+  if(dim(commonPatterns[[1]])[1]== 0){
+    cov0 <- negativeCovariateData
+    transactionsRowIdNegative <- NULL
+    ParallelLogger::logInfo("FP mining returned 0 FPs for negative class therefore returning trainData.")
+  } else {
+    cov0 <- commonPatterns[[1]]
+    transactionsRowIdNegative <- unique(transactionInfo(transactionsNegative)$sequenceID)
+  }
+  
+  if (dim(commonPatterns[[2]])[1]== 0) {
+    cov1 <- positiveCovariateData
+    transactionsRowIdPositive <- NULL
+    ParallelLogger::logInfo("FP mining returned 0 FPs for positive class therefore returning trainData.")
+  } else {
+    cov1 <- commonPatterns[[2]]
+    transactionsRowIdPositive <- unique(transactionInfo(transactionsPositive)$sequenceID)
+  }
+  
+  trainCov <- addEmergentPatternsToAndromeda(plpDataObject = trainData$Train,
+                                             fileWithFPsNegative = cov0, 
+                                             fileWithFPsPositive = cov1,
+                                             transactionsRowIdNegative = transactionsRowIdNegative, 
+                                             transactionsRowIdPositive = transactionsRowIdPositive, 
+                                             objectWithIdsNegative = inputDataNegative,
+                                             objectWithIdsPositive = inputDataPositive, 
+                                             fileToSave = file.path(dirLocation, fileName))
+  
+
+  ### End of Train
+  
+  ParallelLogger::logInfo("Starting mining test set.")
+  
+  if(dim(s0)[1]== 0){
+    testCov = trainData$Test
+    ParallelLogger::logInfo("FP mining returned 0 FPs therefore returning trainData.")
+  } else {
+    testDataRowId <- trainData$Test$labels$rowId
+
+    covariateDataTest <- Andromeda::copyAndromeda(temporalPlpData$covariateData)
+    
+    covariateDataTest$covariates <- covariateDataTest$covariates %>%
+      filter(rowId %in% testDataRowId)
+    
+    inputDataTest <- AssociationRuleMining::getInputFileForCSpade(covariateDataObject = covariateDataTest, 
+                                                                  fileToSave = file.path(dirLocation, 
+                                                                                         paste0(fileName, "testSet.txt")))
+    #browser()
+    transactionsTest <- arulesSequences::read_baskets(con =  file.path(dirLocation, 
+                                                                   paste0(fileName, "testSet.txt")), sep = ";", info = c("sequenceID","eventID","SIZE"))
+    
+    patternsTrain <- c(commonPatterns[[1]], commonPatterns[[2]])
+    duplicated <- arulesSequences::duplicated(patternsTrain)
+    patternsTrain <- patternsTrain[!duplicated]
+    patternsTest <- arules::supportingTransactions(patternsTrain, transactions = transactionsTest)
+    
+    if (savePatterns){
+      saveRDS(patternsTest, file.path(dirLocation, paste0(fileName, "_FPs_test.Rds")))
+    }
+    
+    trainCovariateRef <- cov$covariateData$trainCovariateRef
+    
+    # transactionsRowId <- transactionInfo(transactions)$sequenceID
+    transactionsRowIdTest <- unique(transactionInfo(transactionsTest)$sequenceID)
+    
+    if(dim(patternsTest)[1]== 0){
+      cov <- trainData$Test
+      ParallelLogger::logInfo("FP mining on the test set returned 0 FPs, therefore returning testData.")
+    } else {
+      
+      cov <- addTestSetPatternsToAndromedaFromCSpade(plpDataObject = trainData$Test, 
+                                                     fileWithFPs = patternsTest, 
+                                                     objectWithIds = inputDataTest,
+                                                     plpDataTrain = trainCovariateRef,
+                                                     transactionsRowId = transactionsRowIdTest,
+                                                     fileToSave = file.path(dirLocation, fileName))
+      
+    }
+    ###
+    testCovariateData <- Andromeda::copyAndromeda(temporalPlpData$covariateData)
+    
+    testCovariateData$covariates <- testCovariateData$covariates %>%
+      dplyr::filter(rowId %in% testDataRowId)
+    
+    ParallelLogger::logInfo("Creating input data for test set.")
+    inputDataTest <- AssociationRuleMining::getInputFileForCSpade(covariateDataObject = testCovariateData, fileToSave = file.path(dirLocation, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "testSet.txt")))
+    testTransactions <- arulesSequences::read_baskets(con =  file.path(dirLocation, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "testSet.txt")), sep = ";", info = c("sequenceID","eventID","SIZE"))
+    
+    ParallelLogger::logInfo("Mining test set...")
+    # Extracting matching transactions
+    patternsTest <- arules::supportingTransactions(s0, transactions = testTransactions)
+    ParallelLogger::logInfo("Done.")
+    
+    if (savePatterns){
+      saveRDS(patternsTest, file.path(dirLocation, paste0(fileName,"_MS_", nameMinSup, "_PL_", namePatternLength,  "_minedFPs_testSet.Rds")))
+    }
+    
+    ParallelLogger::logInfo("Appending to Andromeda...")
+    testTransactionsRowId <- unique(arules::transactionInfo(testTransactions)$sequenceID)
+    testCov <- AssociationRuleMining::addTestSetPatternsToAndromedaFromCSpade(plpDataObject = trainData$Test, 
+                                                                              plpDataTrain  = trainCov$covariateData$covariateRef,
+                                                                              fileWithFPs = patternsTest,
+                                                                              objectWithIds = inputDataTest, 
+                                                                              transactionsRowId = testTransactionsRowId,
+                                                                              fileToSave = file.path(dirLocation, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData")))
+  }
+  
+  attr(trainCov$covariateData, "patternLength") <- patternLength
+  attr(trainCov$covariateData, "minimumSupport") <- minimumSupport
+  attr(testCov$covariateData, "patternLength") <- patternLength
+  attr(testCov$covariateData, "minimumSupport") <- minimumSupport
+  
+  result  = list(
+    Train = trainCov,
+    Test = testCov
+  )
+  
   return(result)
+  
+}
+
+#' @export
+extractEPs <- function(runFrequentPatternsSettings, 
+                       inputFolder,
+                       outputFolder,
+                       fileName
+){
+  
+  # Settings required for running FPM
+  temporalPlpData = runFrequentPatternsSettings$temporalPlpData
+  minMinimumSupport = min(runFrequentPatternsSettings$minimumSupportValues)
+  maxPatternLength = max(runFrequentPatternsSettings$patternLengthValues)
+  minimumSupportValues = runFrequentPatternsSettings$minimumSupportValues
+  patternLengthValues = runFrequentPatternsSettings$patternLengthValues
+  
+  FPs_directory <- file.path(outputFolder, "data", "inputs", "minedFPs")
+  plpData_directory <- file.path(outputFolder, "data", "inputs", "plpData")
+  inputDirectory <- file.path(inputFolder, "data", "inputs", "predictorSets", fileName)
+  
+  output1 <- loadBakedData(file.path(outputFolder, "data", "processedData"))
+  temporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_temporal")))
+  
+  settings <- mineFrequentPatternsSettings(minimumSupport = minMinimumSupport, 
+                                           maximumPatternLength = maxPatternLength, 
+                                           maximumItemSize = 1, 
+                                           removeLengthOnePatterns = TRUE,
+                                           temporalPlpData = temporalPlpData,
+                                           transactionsObject = NULL, 
+                                           savePatterns = TRUE,
+                                           classification = FALSE, 
+                                           outputFolder = FPs_directory,
+                                           fileName = "MOTHER")
+  
+  output2 = list(
+    population = output1$population
+  )
+  output2$plpData <- PredictiveValueFPs::mineTotalEmergentPatterns(trainData = output1$plpData, featureEngineeringSettings = settings)
+  
+  ParallelLogger::logInfo(paste("Done extracting fps with minimum support value", minMinimumSupport, "(the lowest), and max pattern length", maxPatternLength,"(the highest)."))
+  
+  nameMinSup = gsub(x = minMinimumSupport, pattern = "\\.",replacement =  "_")
+  namePatternLength = maxPatternLength
+  saveBakedData(object = output2, file = file.path(plpData_directory, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData")))
   
 }
