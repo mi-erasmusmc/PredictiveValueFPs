@@ -3,6 +3,7 @@ execute <- function(runExtractAtemporalData = FALSE,
                     runExtractTemporalData = FALSE,
                     runPrepareData = FALSE,
                     runExtractFPs = FALSE,
+                    runExtractEPs = FALSE,
                     runGenerateFPObjects = FALSE,
                     runFeatureSelection = FALSE, 
                     runBaseline = FALSE,
@@ -94,6 +95,16 @@ execute <- function(runExtractAtemporalData = FALSE,
   # step2: Mine frequent patterns using the minimum minSup value and the maximum pattern length
   if (runExtractFPs) {
     extractFPs(
+      runFrequentPatternsSettings = runFrequentPatternsSettings,
+      outputFolder = file.path(saveDirectory, analysisId),
+      inputFolder = file.path(covariateDirectory, analysisId),
+      fileName = fileName
+    )
+  }
+  
+  # step2.5: Mine frequent patterns using the minimum minSup value and the maximum pattern length
+  if (runExtractEPs) {
+    extractEPs(
       runFrequentPatternsSettings = runFrequentPatternsSettings,
       outputFolder = file.path(saveDirectory, analysisId),
       inputFolder = file.path(covariateDirectory, analysisId),
