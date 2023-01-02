@@ -41,8 +41,8 @@
       "RemoteRepo": "AssociationRuleMining",
       "RemoteUsername": "mi-erasmusmc",
       "RemoteRef": "arrow_support",
-      "RemoteSha": "56d8ecb26f7c1b431e24f2bbb7c6986dcda556eb",
-      "Hash": "51d676523f3f2caa4384efe9be675c74",
+      "RemoteSha": "4c286e539067f05959e87438da3ac08266d32f71",
+      "Hash": "8483e380b186b7ae557a85326cb84be6",
       "Requirements": [
         "ParallelLogger",
         "SqlRender",
@@ -494,10 +494,10 @@
     },
     "cli": {
       "Package": "cli",
-      "Version": "3.4.1",
+      "Version": "3.5.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0d297d01734d2bcea40197bd4971a764",
+      "Hash": "eb9fc121ad9a1075c471107ef185be46",
       "Requirements": []
     },
     "clipr": {
@@ -1215,13 +1215,16 @@
     },
     "purrr": {
       "Package": "purrr",
-      "Version": "0.3.5",
+      "Version": "1.0.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "54842a2443c76267152eface28d9e90a",
+      "Hash": "1ad491d27989ec6c26a2918ad6df116b",
       "Requirements": [
+        "cli",
+        "lifecycle",
         "magrittr",
-        "rlang"
+        "rlang",
+        "vctrs"
       ]
     },
     "rJava": {
