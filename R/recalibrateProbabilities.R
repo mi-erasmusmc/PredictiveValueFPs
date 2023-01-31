@@ -40,7 +40,7 @@ recalibrateProbabilities <- function(runPlpSettings,
    
     plpResult <- PatientLevelPrediction::loadPlpResult(file.path(plpResultDir[i], "plpResult"))
     PatientLevelPrediction::recalibrateModel(plpResult = plpResult, 
-                                             recalibrationMethod = 'recalibrationInTheLarge',
+                                             recalibrationMethod = 'internalRecalibrationInTheLarge',
                                              saveDirectory = recalibrationDirectory)
   } else {
     ParallelLogger::logInfo(paste('Analysis', analysisId, 'for outcome', analysisName, 'exists at', file.path(recalibrationDirectory)))
