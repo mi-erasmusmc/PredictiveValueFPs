@@ -60,6 +60,19 @@ execute <- function(runExtractAtemporalData = FALSE,
   # plpInput_directory <- file.path(saveDirectory, analysisId, "data", "inputs", "predictorSets", fileName)
   plpData_directory <- file.path(saveDirectory, analysisId, "data", "inputs", "plpData")
   plpOutput_directory <- file.path(saveDirectory, analysisId, "results")
+  
+  # start log 
+  # ParallelLogger::addDefaultFileLogger("analysisLog")
+  # on.exit(ParallelLogger::unregisterLogger("analysisLog"))
+  logSettings <- PatientLevelPrediction::createLogSettings(logName = "FPMLog")
+  logPath <- file.path(saveDirectory, analysisId)
+  logSettings$saveDirectory <- logPath
+  logSettings$logFileName <- 'fpmLog'
+  logger <- do.call(PatientLevelPrediction:::createLog,logSettings)
+  ParallelLogger::registerLogger(logger)
+  on.exit(PatientLevelPrediction:::closeLog(logger))
+  # PatientLevelPrediction:::createLog(verbosity = "DEBUG", timeStamp = TRUE, logName = "FPM Log", saveDirectory = file.path(saveDirectory, analysisId),
+  #                                    logFileName =  )
 
   # Step 0: extract covariates
   if (runExtractAtemporalData) {
