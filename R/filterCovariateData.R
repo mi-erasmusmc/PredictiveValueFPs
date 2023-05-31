@@ -61,7 +61,7 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
     dplyr::pull(covariateId)
   
   keepCovariates <- covariateData$covariateRef %>% 
-    dplyr::filter("analysisId" == 999 & "patternLength" <= patLen & "support" >= minSup) %>%
+    dplyr::filter(analysisId == 999 & patternLength <= patLen & support >= minSup) %>%
     dplyr::pull(covariateId)
   
   if (createSets == "freqPatsOnly"){

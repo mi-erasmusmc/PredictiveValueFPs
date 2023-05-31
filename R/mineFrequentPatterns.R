@@ -178,7 +178,7 @@ mineTotalFrequentPatterns <- function(trainData,
                                   control = list(verbose = TRUE, tidLists = TRUE))
     
     # The following is to correct for the arulesSequences misreading of rowIds 
-    tidLists <- supportingTransactions(s0, transactions = transactions)
+    tidLists <- arules::supportingTransactions(s0, transactions = transactions)
     s0@tidLists <- tidLists
     
     nameMinSup <- gsub(pattern = "\\.", replacement = "_", x = minimumSupport)
