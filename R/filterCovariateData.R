@@ -132,6 +132,8 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
   attr(testCovariateData, "minimumSupport") <- minimumSupport
   result$Test$covariateData <- testCovariateData
   
+  rm(list = c("covariateData", "trainCovariateData", "testCovariateData"))
+  gc()
   return(result)
 }
 

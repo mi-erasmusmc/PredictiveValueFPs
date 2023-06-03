@@ -154,7 +154,6 @@ mineTotalFrequentPatterns <- function(trainData,
   
   trainCovariateData <- Andromeda::copyAndromeda(temporalPlpData$covariateData)
   
-  
   ParallelLogger::logInfo("\nPreparing train data for Frequent Pattern mining...")
   
   trainCovariateData$covariates <- trainCovariateData$covariates %>%
@@ -242,6 +241,8 @@ mineTotalFrequentPatterns <- function(trainData,
                                                                          transactionsRowId = transactionsRowId,
                                                                          fileToSave = file.path(dirLocation, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData")))
   }
+  
+  rm(list = c("trainCovariateData"))
   ### End of Train
   
   ParallelLogger::logInfo("Starting mining test set.")
@@ -280,6 +281,7 @@ mineTotalFrequentPatterns <- function(trainData,
                                                                             fileToSave = file.path(dirLocation, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData")))
   }
   
+  rm(list = c("testCovariateData"))
   # featureEngeering <- list(
   #   funct = 'appendFrequentPatterns',
   #   settings = list(

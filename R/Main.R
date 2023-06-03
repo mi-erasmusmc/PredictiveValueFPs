@@ -94,7 +94,9 @@ execute <- function(runExtractAtemporalData = FALSE,
       fileName = fileName
     )
   }
-
+  
+  gc()
+  
   # step1 : pepare data with folds(for train/test) + additional recipes (sample data, tidy covariates)
   if (runPrepareData) {
     prepareData(
@@ -124,6 +126,8 @@ execute <- function(runExtractAtemporalData = FALSE,
       fileName = fileName
     )
   }
+  
+  gc()
 
   # step3: Prepare all sets of frequent patterns that are going to be examined
   if (runGenerateFPObjects) {
@@ -136,6 +140,7 @@ execute <- function(runExtractAtemporalData = FALSE,
     )
   }
   
+  gc()
   # step4: Feature Selection
   if (runFeatureSelection){
     PredictiveValueFPs::performFeatureSelection(inputDirectory = plpData_directory, 
