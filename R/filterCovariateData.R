@@ -66,11 +66,20 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
   
   if (createSets == "freqPatsOnly"){
     
+    # the line below is not ideal: while the purpose suggest to build a plpData object with only FPs,
+    # demographics and gender are added as well for the purpose of a specific analysis
+    demoCovs <- covariateData$covariateRef %>%
+      dplyr::filter(analysisId %in% c(1, 2)) %>%
+      dplyr::select(covariateId) %>%
+      dplyr::pull()
+    
+    covariates <- c(demoCovs, keepCovariates)
+    
     covariateData$covariateRef <- covariateData$covariateRef %>%
-      dplyr::filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% covariates)
     
     covariateData$covariates <- covariateData$covariates %>%
-      dplyr::filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% covariates)
     
     ParallelLogger::logInfo(paste0("Number of covariates in train set ", length(keepCovariates), "."))
   }
@@ -108,10 +117,10 @@ filterPlpData <- function(plpData, minimumSupport, patternLength, createSets = c
   if (createSets == "freqPatsOnly"){
     
     testCovariateData$covariateRef <- testCovariateData$covariateRef %>%
-      dplyr::filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% covariates)
     
     testCovariateData$covariates <- testCovariateData$covariates %>%
-      dplyr::filter(covariateId %in% keepCovariates)
+      dplyr::filter(covariateId %in% covariates)
   }
   
   if (createSets == "mix"){    
