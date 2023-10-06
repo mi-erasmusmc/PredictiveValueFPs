@@ -11,15 +11,17 @@ generateFPObjects <- function(minimumSupportValues,
   
   ParallelLogger::logInfo(paste("Loading baked mother data.."))
   
-  output2 <- loadBakedData(file.path(plpData_directory, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData")))
+  output2 <- loadBakedData(file.path(plpData_directory, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData_raw")))
   
-  combs <- expand.grid(minimumSupportValues, patternLengthValues) %>%
-    slice(n = 1:n() - 1)
+  # combs <- expand.grid(minimumSupportValues, patternLengthValues) %>%
+  #   slice(n = 1:n() - 1)
+  
+  combs <- expand.grid(minimumSupportValues, patternLengthValues) 
   
   referenceNames <- output2$plpData$Train$covariateData$covariateRef %>% dplyr::collect() %>% base::colnames()
 
   if (!(c("support.x") %in% referenceNames)){
-  if (covariateSet == "freqPatOnly"){
+  if (covariateSet == "freqPatsOnly"){
     covList <- list()
     for (i in seq_along(1:nrow(combs))) {
       
@@ -58,7 +60,7 @@ generateFPObjects <- function(minimumSupportValues,
       }
   }
   } else {
-    if (covariateSet == "freqPatOnly"){
+    if (covariateSet == "freqPatsOnly"){
       covList <- list()
       for (i in seq_along(1:nrow(combs))) {
         
