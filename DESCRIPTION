@@ -2,7 +2,7 @@ Package: PredictiveValueFPs
 Title: A reproducible package to perform studies for the predictive value of frequent patterns
 Version: 0.0.0.9000
 Authors@R: 
-    person("Solon", "Ioannou", , "s.ioannou@ersmusmc.nl", role = c("aut", "cre"),
+    person("Solon", "Ioannou", , "s.ioannou@erasmusmc.nl", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
