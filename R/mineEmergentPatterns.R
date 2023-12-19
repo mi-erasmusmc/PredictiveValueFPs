@@ -255,6 +255,6 @@ extractEPs <- function(runFrequentPatternsSettings,
   
   nameMinSup = gsub(x = minMinimumSupport, pattern = "\\.",replacement =  "_")
   namePatternLength = maxPatternLength
-  saveBakedData(object = output2, file = file.path(plpData_directory, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData")))
+  saveBakedData(object = output2, file = file.path(plpData_directory, paste0(fileName, "_MS_", nameMinSup, "_PL_", namePatternLength, "_plpData_raw")))
   
 }
