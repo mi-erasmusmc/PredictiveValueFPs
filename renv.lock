@@ -42,7 +42,7 @@
       "RemoteUsername": "mi-erasmusmc",
       "RemoteRef": "arrow_support",
       "RemoteSha": "4c286e539067f05959e87438da3ac08266d32f71",
-      "Hash": "8483e380b186b7ae557a85326cb84be6",
+      "Hash": "df762ffe2409ca3103bef3a68f3d5a8c",
       "Requirements": [
         "ParallelLogger",
         "SqlRender",
@@ -145,14 +145,14 @@
       "Package": "FeatureExtraction",
       "Version": "3.2.0",
       "Source": "GitHub",
-      "Remotes": "ohdsi/Eunomia",
       "RemoteType": "github",
+      "Remotes": "ohdsi/Eunomia",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "FeatureExtraction",
       "RemoteUsername": "ohdsi",
       "RemoteRef": "arrow_S4",
       "RemoteSha": "bd0b6cfcba0e285ab0a7da4cbd6957d04e5acaae",
-      "Hash": "73610a2f582e19e5776d618b43f62ab4",
+      "Hash": "dff53bf4c8bc9251a9f4840fc9bdaa15",
       "Requirements": [
         "Andromeda",
         "DBI",
@@ -216,8 +216,8 @@
       "Package": "PatientLevelPrediction",
       "Version": "6.0.4",
       "Source": "GitHub",
-      "Remotes": "egillax/BigKnn@arrow, ohdsi/DatabaseConnector, ohdsi/Eunomia,\n        ohdsi/Andromeda@arrow_S4, ohdsi/Cyclops@arrow_S4,\n        ohdsi/FeatureExtraction@arrow_S4,\n        ohdsi/IterativeHardThresholding, ohdsi/ParallelLogger,\n        ohdsi/OhdsiShinyModules",
       "RemoteType": "github",
+      "Remotes": "egillax/BigKnn@arrow, ohdsi/DatabaseConnector, ohdsi/Eunomia,\n    ohdsi/Andromeda@arrow_S4, ohdsi/Cyclops@arrow_S4,\n    ohdsi/FeatureExtraction@arrow_S4, ohdsi/IterativeHardThresholding,\n    ohdsi/ParallelLogger, ohdsi/OhdsiShinyModules",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "PatientLevelPrediction",
       "RemoteUsername": "solisOhdsi",
@@ -374,14 +374,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "c39fbec8a30d23e721980b8afb31984c",
-      "Requirements": []
-    },
-    "base64enc": {
-      "Package": "base64enc",
-      "Version": "0.1-3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "543776ae6848fde2f48ff3816d0628bc",
       "Requirements": []
     },
     "bit": {
@@ -633,14 +625,6 @@
       "Hash": "15e9634c0fcd294799e9b2e929ed1b86",
       "Requirements": []
     },
-    "getopt": {
-      "Package": "getopt",
-      "Version": "1.20.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "ad68e3263f0bc9269aab8c2039440117",
-      "Requirements": []
-    },
     "ggplot2": {
       "Package": "ggplot2",
       "Version": "3.4.0",
@@ -710,31 +694,6 @@
         "pkgconfig",
         "rlang",
         "vctrs"
-      ]
-    },
-    "htmltools": {
-      "Package": "htmltools",
-      "Version": "0.5.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6496090a9e00f8354b811d1a2d47b566",
-      "Requirements": [
-        "base64enc",
-        "digest",
-        "fastmap",
-        "rlang"
-      ]
-    },
-    "htmlwidgets": {
-      "Package": "htmlwidgets",
-      "Version": "1.5.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "76147821cd3fcd8c4b04e1ef0498e7fb",
-      "Requirements": [
-        "htmltools",
-        "jsonlite",
-        "yaml"
       ]
     },
     "igraph": {
@@ -843,14 +802,6 @@
         "nlme"
       ]
     },
-    "microbenchmark": {
-      "Package": "microbenchmark",
-      "Version": "1.4.9",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "7001412b0204877d34dd8f46b04fde62",
-      "Requirements": []
-    },
     "munsell": {
       "Package": "munsell",
       "Version": "0.5.0",
@@ -869,16 +820,6 @@
       "Hash": "02e3c6e7df163aafa8477225e6827bc5",
       "Requirements": [
         "lattice"
-      ]
-    },
-    "optparse": {
-      "Package": "optparse",
-      "Version": "1.7.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "aa4a7717b5760a769c7fd3d34614f2a2",
-      "Requirements": [
-        "getopt"
       ]
     },
     "pROC": {
@@ -1002,17 +943,6 @@
         "ps"
       ]
     },
-    "profvis": {
-      "Package": "profvis",
-      "Version": "0.3.7",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "e9d21e79848e02e524bea6f5bd53e7e4",
-      "Requirements": [
-        "htmlwidgets",
-        "stringr"
-      ]
-    },
     "progress": {
       "Package": "progress",
       "Version": "1.2.2",
@@ -1101,6 +1031,18 @@
       "Repository": "CRAN",
       "Hash": "c9e8442ab69bc21c9697ecf856c1e6c7",
       "Requirements": []
+    },
+    "reshape2": {
+      "Package": "reshape2",
+      "Version": "1.4.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "bb5996d0bd962d214a11140d77589917",
+      "Requirements": [
+        "Rcpp",
+        "plyr",
+        "stringr"
+      ]
     },
     "reticulate": {
       "Package": "reticulate",
@@ -1398,20 +1340,24 @@
       "Hash": "c0e49a9760983e81e55cdd9be92e7182",
       "Requirements": []
     },
+    "xgboost": {
+      "Package": "xgboost",
+      "Version": "1.7.5.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "6b8d09cf8ffc148162a4d57d01e61490",
+      "Requirements": [
+        "Matrix",
+        "data.table",
+        "jsonlite"
+      ]
+    },
     "xml2": {
       "Package": "xml2",
       "Version": "1.3.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "40682ed6a969ea5abfd351eb67833adc",
-      "Requirements": []
-    },
-    "yaml": {
-      "Package": "yaml",
-      "Version": "2.3.6",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "9b570515751dcbae610f29885e025b41",
       "Requirements": []
     },
     "zip": {
