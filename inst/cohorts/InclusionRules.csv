@@ -1,0 +1,2 @@
+cohortName,ruleSequence,ruleName,cohortId
+plp_task_Acute_MI,0,has no events in prior 'clean window' - 365 days,5412

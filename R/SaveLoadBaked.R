@@ -37,7 +37,7 @@ saveBakedData <- function(object,
   # Population
   saveRDS(object = object$population, file = file.path(file, "population.rds"))
   # Train
-  Andromeda::saveAndromeda(object$plpData$Train$covariateData, file = file.path(file, "Train", "covariates"), maintainConnection = T)
+  Andromeda::saveAndromeda(object$plpData$Train$covariateData, fileName = file.path(file, "Train", "covariates"))
   # saveRDS(plpData$timeRef, file = file.path(file, file.path("Train", "timeRef.rds")))
   # saveRDS(plpData$cohorts, file = file.path(file, file.path("Train", "cohorts.rds")))
   # saveRDS(plpData$outcomes, file = file.path(file, file.path("Train","outcomes.rds")))
@@ -48,7 +48,7 @@ saveBakedData <- function(object,
   trainMetaData <- attr(object$plpData$Train, "metaData")
   saveRDS(trainMetaData, file.path(file, "metaData.rds"))
   # Test
-  Andromeda::saveAndromeda(object$plpData$Test$covariateData, file = file.path(file, "Test", "covariates"), maintainConnection = T)
+  Andromeda::saveAndromeda(object$plpData$Test$covariateData, fileName = file.path(file, "Test", "covariates"))
   saveRDS(object$plpData$Test$labels, file = file.path(file, "Test","labels.rds"))
 
 }

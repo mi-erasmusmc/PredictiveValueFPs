@@ -41,21 +41,27 @@ predictFPs <- function(runPlpSettings,
       patLen = attributes(plpDataList[[i]]$plpData$Train$covariateData)$patternLength
       MS = gsub(pattern = "\\.", replacement = "_", x = minSup)
       
-      modelsList[[i]] <- executeRunPlp(plpData = atemporalPlpData, 
-                                       data = plpDataList[[i]]$plpData,
-                                       population = plpDataList[[1]]$population, 
-                                       outcomeId = outcomeId,
-                                       analysisId = paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen, "fpsOnly"),
-                                       analysisName = analysisName, 
-                                       populationSettings = populationSettings, 
-                                       splitSettings = splitSettings, 
-                                       sampleSettings = sampleSettings, 
-                                       # featureEngineeringSettings = settingsAppend, #note this here  
-                                       preprocessSettings = preprocessSettings, 
-                                       modelSettings = modelSettings, 
-                                       logSettings = logSettings, 
-                                       executeSettings = executeSettings, 
-                                       saveDirectory = plpOutput_directory)
+      analysisExists <- file.exists(file.path(plpOutput_directory, paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen), "plpResult", "runPlp.rds"))
+      
+      if (!analysisExists){
+      executeRunPlp(plpData = atemporalPlpData, 
+                              data = plpDataList[[i]]$plpData,
+                              population = plpDataList[[1]]$population, 
+                              outcomeId = outcomeId,
+                              analysisId = paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen, "fpsOnly"),
+                              analysisName = analysisName, 
+                              populationSettings = populationSettings, 
+                              splitSettings = splitSettings, 
+                              sampleSettings = sampleSettings, 
+                              # featureEngineeringSettings = settingsAppend, #note this here  
+                              preprocessSettings = preprocessSettings, 
+                              modelSettings = modelSettings, 
+                              logSettings = logSettings, 
+                              executeSettings = executeSettings, 
+                              saveDirectory = plpOutput_directory)
+      } else {
+        ParallelLogger::logInfo(paste('Analysis', paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen, "fpsOnly"), 'for outcome', analysisName, 'exists at', file.path(plpOutput_directory)))
+      }
     }
   }
 
@@ -69,24 +75,35 @@ predictFPs <- function(runPlpSettings,
     for (i in seq_along(plpDataList)) {
     minSup = attributes(plpDataList[[i]]$plpData$Train$covariateData)$minimumSupport
     patLen = attributes(plpDataList[[i]]$plpData$Train$covariateData)$patternLength
+    featuresSelected <- attributes(plpDataList[[i]]$plpData$Train$covariateData)$featuresSelected
     MS = gsub(pattern = "\\.", replacement = "_", x = minSup)
     
+    if (is.null(featuresSelected)){
+      fullAnalysisName <- paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen)
+    } else {
+      fullAnalysisName <- paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen, "_", featuresSelected)
+    }
+    analysisExists <- file.exists(file.path(plpOutput_directory, fullAnalysisName, "plpResult", "runPlp.rds"))
     
-    modelsList[[i]] <- executeRunPlp(plpData = atemporalPlpData, 
-                                     data = plpDataList[[i]]$plpData,
-                                     population = plpDataList[[1]]$population, 
-                                     outcomeId = outcomeId,
-                                     analysisId = paste0("Analysis_FPS_", modelName, "_MS_", MS, "_PL_", patLen),
-                                     analysisName = analysisName, 
-                                     populationSettings = populationSettings, 
-                                     splitSettings = splitSettings, 
-                                     sampleSettings = sampleSettings, 
-                                     # featureEngineeringSettings = settingsAppend, #note this here  
-                                     preprocessSettings = preprocessSettings, 
-                                     modelSettings = modelSettings, 
-                                     logSettings = logSettings, 
-                                     executeSettings = executeSettings, 
-                                     saveDirectory = plpOutput_directory)
+    if (!analysisExists){
+    executeRunPlp(plpData = atemporalPlpData, 
+                            data = plpDataList[[i]]$plpData,
+                            population = plpDataList[[1]]$population, 
+                            outcomeId = outcomeId,
+                            analysisId = paste0(fullAnalysisName),
+                            analysisName = analysisName, 
+                            populationSettings = populationSettings, 
+                            splitSettings = splitSettings, 
+                            sampleSettings = sampleSettings, 
+                            # featureEngineeringSettings = settingsAppend, #note this here  
+                            preprocessSettings = preprocessSettings, 
+                            modelSettings = modelSettings, 
+                            logSettings = logSettings, 
+                            executeSettings = executeSettings, 
+                            saveDirectory = plpOutput_directory)
+    } else {
+      ParallelLogger::logInfo(paste('Analysis', fullAnalysisName, 'for outcome', analysisName, 'exists at', file.path(plpOutput_directory)))
+      }
     }
   }
 }
@@ -112,6 +129,7 @@ predictBaseline <- function(runPlpSettings,
   analysisName = analysisSettings$analysisName 
   atemporalPlpData = analysisSettings$atemporalPlpData
   fileName = stringr::str_remove(analysisName, "predicting_")
+  modelName <- attributes(modelSettings$param)$settings$modelType
   
   bakedPlpData_directory <- file.path(outputFolder, analysisId, "data", "processedData")
   plpOutput_directory <- file.path(outputFolder, analysisId, "results")
@@ -122,20 +140,26 @@ predictBaseline <- function(runPlpSettings,
   ParallelLogger::logInfo("Loading plpData objects...")
   atemporalPlpData <- PatientLevelPrediction::loadPlpData(file.path(inputDirectory, paste0(fileName, "_atemporal")))
   bakedPlpData <- loadBakedData(file = bakedPlpData_directory)
-      
-      baselineModel <- executeRunPlp(plpData = atemporalPlpData, 
-                                     data = bakedPlpData$plpData,
-                                     population = bakedPlpData$population, 
-                                     outcomeId = outcomeId,
-                                     analysisId = paste0("Analysis_Baseline"),
-                                     analysisName = analysisName, 
-                                     populationSettings = populationSettings, 
-                                     splitSettings = splitSettings, 
-                                     sampleSettings = sampleSettings, 
-                                     # featureEngineeringSettings = settingsAppend, #no feature enineering
-                                     preprocessSettings = preprocessSettings, 
-                                     modelSettings = modelSettings, 
-                                     logSettings = logSettings, 
-                                     executeSettings = executeSettings, 
-                                     saveDirectory = plpOutput_directory)
+  
+  analysisExists <- file.exists(file.path(plpOutput_directory, paste0("Analysis_Baseline_", modelName), "plpResult", "runPlp.rds"))
+  
+  if (!analysisExists){    
+      executeRunPlp(plpData = atemporalPlpData, 
+                              data = bakedPlpData$plpData,
+                              population = bakedPlpData$population, 
+                              outcomeId = outcomeId,
+                              analysisId = paste0("Analysis_Baseline_", modelName),
+                              analysisName = analysisName, 
+                              populationSettings = populationSettings, 
+                              splitSettings = splitSettings, 
+                              sampleSettings = sampleSettings, 
+                              # featureEngineeringSettings = settingsAppend, #no feature enineering
+                              preprocessSettings = preprocessSettings, 
+                              modelSettings = modelSettings, 
+                              logSettings = logSettings, 
+                              executeSettings = executeSettings, 
+                              saveDirectory = plpOutput_directory)
+  } else {
+    ParallelLogger::logInfo(paste('Analysis Baseline for outcome', analysisName, 'exists at', file.path(plpOutput_directory)))
+      }
 }
