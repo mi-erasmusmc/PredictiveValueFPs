@@ -38,9 +38,9 @@ How to run
 	renv::restore()
 	```
 
-3. In RStudio, select 'Build' then 'Install and Restart' to install the `LegendT2dm` package.
+3. In RStudio, select 'Build' then 'Install and Restart' to install the `PredictiveValueFPs` package.
 
-4. To run the analysis, all code is also provided under `extras/CodeToRun.R`. Make sure to fill in the required details to collect to your database etc. 
+4. Before running the analysis, fill in the missing parts of the code provided under `extras/CodeToRun_parallel.R` and `extras/ScriptToRunParallel.R`. Then run the contents of the `extras/CodeToRun_parallel.R` to run the analysis. 
 
 License
 =======
@@ -52,4 +52,4 @@ Development
 
 ### Development status
 
-Collecting cohort diagnostics from data partners.
+Manuscript preparation. 
